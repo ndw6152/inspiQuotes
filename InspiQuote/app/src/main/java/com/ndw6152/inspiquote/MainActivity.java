@@ -1,9 +1,11 @@
 package com.ndw6152.inspiquote;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             RestClient.getRandomQuote(et_authorName.getText().toString(), updateScreenCallback);
+            View view1 = this.getCurrentFocus();
+            if (view1 != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 }
