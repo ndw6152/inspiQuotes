@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    Log.e(TAG, "Code = " + response.code() + " " + response.message());
+                    showToast("No quotes from that author");
                 }
                 else {
                     Log.i(TAG, response.message());
