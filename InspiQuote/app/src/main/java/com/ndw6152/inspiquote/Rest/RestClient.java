@@ -29,4 +29,9 @@ public class RestClient {
         String url = RestClient.URI_BASE + quote;
         RestClient.GET(url, responseCallback);
     }
+
+    public static void getRandomQuote(String author, Callback responseCallback) {
+        String url = RestClient.URI_BASE + quote + "/" + author;
+        RestClient.GET(url, responseCallback);
+    }
 }
