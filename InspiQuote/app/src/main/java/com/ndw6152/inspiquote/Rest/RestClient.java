@@ -13,7 +13,8 @@ public class RestClient {
     private static String TAG = "RestClient";
     private static OkHttpClient client = new OkHttpClient();
 
-    private static String URI_BASE ="http://192.168.86.49:5000";
+    //private static String URI_BASE ="http://192.168.86.49:5000";
+    private static String URI_BASE ="https://flask-inspiquote.herokuapp.com";
     private static String quote = "/quote";
 
 
