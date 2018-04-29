@@ -23,3 +23,9 @@ git subtree push --prefix InspiQuoteServer/ heroku master
 
 ## Android app
 InspiQuote app provides a button to GET the quote of the day as well as random quotes from an author
+
+
+Quote of the day             |  Quote
+:-------------------------:|:-------------------------:
+![qod](captures/qod.png)|  ![quote](captures/quote.png)
+
