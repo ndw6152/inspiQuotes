@@ -11,5 +11,5 @@ pip install wikiquotes
 | REST call |                uri               |               Action               |
 |:---------:|:--------------------------------:|:----------------------------------:|
 |    GET    | http://[hostname]/quote          |      Get the quote of the day      |
-|    GET    | http://[hostname]/quote/<author> | Get a random quote from the author |
+|    GET    | http://[hostname]/quote/\<author> | Get a random quote from the author |
 |           |                                  |                                    |
