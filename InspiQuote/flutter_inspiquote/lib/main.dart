@@ -71,8 +71,11 @@ class InspiquoteState extends State<InspiquotePage> {
     );
   }
 
+  // Function fetch the qod and when response receive
+  // displays it in the app
+  // TODO: need error handling
   void _getQuoteOfDay() {
-    final future = getQuoteOfDay();
+    final future = fetchQuoteOfDay();
     future.then((quote) {
       setState(() {
         quoteMessage = quote.quoteMessage;
@@ -97,12 +100,21 @@ class InspiquoteState extends State<InspiquotePage> {
     );
   }
 
+  // Function call the GET REST api and wait for the response
+  // TODO: need error handling
+  void _getRandomQuote(String text) {
+    final future = fetchRandomQuoteFrom(text);
+    future.then((quote) {
+      setState(() {
+        quoteMessage = quote.quoteMessage;
+        author = quote.author;
+      });
+    });
+  }
 
   void _handleSubmitted(String text) {
     _textController.clear();
-    setState(() {
-      quoteMessage = text;
-    });
+    _getRandomQuote(text);
   }
 
   Widget _buildTextComposer() {
