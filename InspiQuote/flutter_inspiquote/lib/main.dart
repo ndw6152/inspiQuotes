@@ -1,14 +1,4 @@
 import 'package:flutter/material.dart';
-
-
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:async_loader/async_loader.dart';
-import 'dart:convert';
-
-import 'dart:io';
-
 import 'package:flutter_inspiquote/network.dart';
 
 void main() => runApp(new MyApp());
@@ -39,7 +29,8 @@ class InspiquotePage extends StatefulWidget  {
 // a qod button and a edittext to input authors
 class InspiquoteState extends State<InspiquotePage> {
   final TextEditingController _textController = new TextEditingController();
-  String message = "Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.";
+  String quoteMessage = "Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.";
+  String author = "Neil";
 
   @override
   Widget build(BuildContext context) {
@@ -50,24 +41,23 @@ class InspiquoteState extends State<InspiquotePage> {
       body: new Column(
         children: <Widget>[
           new Flexible(
-            child: new Center(
-                child: new Container(
+            child: new Container(
                   padding: const EdgeInsets.all(32.0),
-                  child: new FutureBuilder<Quote>(
-                    future: fetchPost(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return new Text(snapshot.data.quoteMessage);
-                      } else if (snapshot.hasError) {
-                        return new Text("${snapshot.error}");
-                      }
-
-                      // By default, show a loading spinner
-                      return new CircularProgressIndicator();
-                    },
-                  ),
+                    child:
+                      new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        new Text(quoteMessage),
+                        new Text(
+                            "-" + author,
+                            style: new TextStyle(
+                              fontStyle: FontStyle.italic,
+                            )
+                        )
+                      ],
+                    ),
                 ),
-            )
           ),
           new Divider(height: 1.0,),
           new Container(
@@ -82,7 +72,13 @@ class InspiquoteState extends State<InspiquotePage> {
   }
 
   void _getQuoteOfDay() {
-
+    final future = getQuoteOfDay();
+    future.then((quote) {
+      setState(() {
+        quoteMessage = quote.quoteMessage;
+        author = quote.author;
+      });
+    });
   }
 
   Widget _buildUserControls() {
@@ -105,7 +101,7 @@ class InspiquoteState extends State<InspiquotePage> {
   void _handleSubmitted(String text) {
     _textController.clear();
     setState(() {
-      message = text;
+      quoteMessage = text;
     });
   }
 

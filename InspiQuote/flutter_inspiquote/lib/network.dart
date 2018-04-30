@@ -17,9 +17,9 @@ class Quote {
   }
 }
 
-Future<Quote> fetchPost() async {
+Future<Quote> getQuoteOfDay() async {
   final response =
-  await http.get('http://192.168.86.49:5000/');
+  await http.get('https://flask-inspiquote.herokuapp.com/');
   final responseJson = json.decode(response.body);
 
   return new Quote.fromJson(responseJson);
