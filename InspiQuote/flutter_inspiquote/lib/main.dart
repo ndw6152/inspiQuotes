@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:async_loader/async_loader.dart';
+import 'dart:convert';
+
+import 'dart:io';
+
+import 'package:flutter_inspiquote/network.dart';
+
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -42,9 +53,18 @@ class InspiquoteState extends State<InspiquotePage> {
             child: new Center(
                 child: new Container(
                   padding: const EdgeInsets.all(32.0),
-                  child: new Text(
-                    message,
-                    softWrap: true,
+                  child: new FutureBuilder<Quote>(
+                    future: fetchPost(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return new Text(snapshot.data.quoteMessage);
+                      } else if (snapshot.hasError) {
+                        return new Text("${snapshot.error}");
+                      }
+
+                      // By default, show a loading spinner
+                      return new CircularProgressIndicator();
+                    },
                   ),
                 ),
             )
@@ -119,8 +139,8 @@ class InspiquoteState extends State<InspiquotePage> {
         )
     );
   }
-
-
 }
+
+
 
 
