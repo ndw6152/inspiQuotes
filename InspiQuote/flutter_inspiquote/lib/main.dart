@@ -32,9 +32,14 @@ class InspiquoteState extends State<InspiquotePage> {
   String quoteMessage = "Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situated 1,578 meters above sea level, it is one of the larger Alpine Lakes. A gondola ride from Kandersteg, followed by a half-hour walk through pastures and pine forest, leads you to the lake, which warms to 20 degrees Celsius in the summer. Activities enjoyed here include rowing, and riding the summer toboggan run.";
   String author = "Neil";
 
+
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: scaffoldKey,
       appBar: new AppBar(
           title: new Text("Inspi_quote")
       ),
@@ -77,10 +82,7 @@ class InspiquoteState extends State<InspiquotePage> {
   void _getQuoteOfDay() {
     final future = fetchQuoteOfDay();
     future.then((quote) {
-      setState(() {
-        quoteMessage = quote.quoteMessage;
-        author = quote.author;
-      });
+      _displayQuote(quote);
     });
   }
 
@@ -100,21 +102,26 @@ class InspiquoteState extends State<InspiquotePage> {
     );
   }
 
-  // Function call the GET REST api and wait for the response
-  // TODO: need error handling
-  void _getRandomQuote(String text) {
-    final future = fetchRandomQuoteFrom(text);
-    future.then((quote) {
-      setState(() {
-        quoteMessage = quote.quoteMessage;
-        author = quote.author;
-      });
+
+  void _displayQuote(Quote q) {
+    setState(() {
+      quoteMessage = q.quoteMessage;
+      author = q.author;
     });
   }
 
-  void _handleSubmitted(String text) {
+  void _handleError() {
+    scaffoldKey.currentState.showSnackBar(new SnackBar(
+      content: new Text("Author does not exist"),
+    ));
+  }
+
+  // Function call the GET REST api and wait for the response
+  void _getRandomQuote(String text) {
     _textController.clear();
-    _getRandomQuote(text);
+    fetchRandomQuoteFrom(text)
+        .then((news) => _displayQuote(news))
+        .catchError((e) => _handleError());
   }
 
   Widget _buildTextComposer() {
@@ -128,7 +135,7 @@ class InspiquoteState extends State<InspiquotePage> {
               new Flexible(
                 child: new TextField(
                   controller: _textController,
-                  onSubmitted: _handleSubmitted,
+                  onSubmitted: (text) {_getRandomQuote(text);},
                   decoration: new InputDecoration(
                     hintText: "Author name"
                   ),
@@ -139,7 +146,9 @@ class InspiquoteState extends State<InspiquotePage> {
                 child: new IconButton(
 
                     icon: new Icon(Icons.search),
-                    onPressed: () => _handleSubmitted(_textController.text)
+                    onPressed: () {
+                      _getRandomQuote(_textController.text);
+                    }
                 ),
               )
             ],
