@@ -112,6 +112,7 @@ class InspiquoteState extends State<InspiquotePage> {
 
   void _handleError() {
     scaffoldKey.currentState.showSnackBar(new SnackBar(
+      backgroundColor: Colors.blueAccent,
       content: new Text("Author does not exist"),
     ));
   }
@@ -148,6 +149,7 @@ class InspiquoteState extends State<InspiquotePage> {
                     icon: new Icon(Icons.search),
                     onPressed: () {
                       _getRandomQuote(_textController.text);
+                      FocusScope.of(context).requestFocus(new FocusNode());
                     }
                 ),
               )
