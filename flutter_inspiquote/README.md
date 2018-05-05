@@ -1,6 +1,6 @@
 # flutter_inspiquote
 
-Flutter app for inspiquote
+A flutter app for inspiquote
 
 ## Getting Started
 
