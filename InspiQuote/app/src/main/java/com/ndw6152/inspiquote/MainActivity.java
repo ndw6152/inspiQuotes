@@ -50,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
                         String quote = jObject.getString("quote");
                         String author = jObject.getString("author");
 
-                        TextView message = findViewById(R.id.textView_showQuote);
-                        updateScreen(message, quote + "\n\n" + "-" + author);
+                        TextView messageText = findViewById(R.id.textView_quote);
+                        TextView authorText = findViewById(R.id.textView_author);
+                        updateScreen(messageText, quote);
+                        updateScreen(authorText, "-" + author);
                     }
                     catch (JSONException e) {
 
