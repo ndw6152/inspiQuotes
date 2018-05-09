@@ -30,5 +30,5 @@ Quote of the day             |  Quote
 ![qod](captures/qod.png)|  ![quote](captures/quote.png)
 
 Flutter application on Android           
-:-------------------------:|:-------------------------:
+
 ![flutterAndroid](captures/flutterApp.gif)| 
