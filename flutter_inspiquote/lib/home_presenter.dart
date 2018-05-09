@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'home_contract.dart';
+import 'package:flutter_inspiquote/home_model.dart';
 
 
 class HomePresenter implements Presenter {
@@ -9,19 +12,25 @@ class HomePresenter implements Presenter {
 
   @override
   void makeQodCall() {
-    _model.fetchQuoteOfDay()
-      .then((quote) => _view.showQuote(quote))
-      .catchError((e) => _view.handleError());
+    Future futureQuote = _model.fetchQuoteOfDay();
+    futureQuote
+        .then((quote) => _view.showQuote(quote))
+        .catchError((e) => _view.handleWrongAuthor());
   }
-
 
   @override
   void makeRandomQuoteCall(String author) {
     //    final quote = await _model.fetchRandomQuote(author);
     //    _view.showQuote(quote);
 
-    _model.fetchRandomQuote(author)
+    _model
+        .fetchRandomQuote(author)
         .then((quote) => _view.showQuote(quote))
-        .catchError((e) => _view.handleError());
+        .catchError((e) => _view.handleWrongAuthor());
+  }
+
+  @override
+  void saveQuote(Quote quote) {
+    // TODO: implement saveQuote
   }
 }

@@ -10,7 +10,7 @@ class Quote {
   final String quoteMessage;
   final String author;
 
-  Quote({this.quoteMessage, this.author,});
+  Quote({this.quoteMessage, this.author});
 
   factory Quote.fromJson(Map<String, dynamic> json) {
     return new Quote(
@@ -34,6 +34,12 @@ class HomeModel implements Model {
     final responseJson = json.decode(response.body);
 
     return new Quote.fromJson(responseJson);
+  }
+
+  @override
+  Future updateListOfFavorites(Quote quote) {
+    // TODO: implement updateListOfFavorites
+    return null;
   }
 }
 

@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> implements View {
   String quoteMessage = "Hello World. Welcome to InspiQuote!";
   String author = "Neil";
 
-
   @override
   void initState() {
     super.initState();
@@ -31,45 +30,61 @@ class _HomePageState extends State<HomePage> implements View {
   Widget _buildTextComposer() {
     return new IconTheme(
         data: new IconThemeData(color: Theme.of(context).accentColor),
-        child:
-        new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: new Container(
           child: new Row(
             children: <Widget>[
               new Flexible(
                 child: new TextField(
                   controller: _textController,
-                  onSubmitted: (author) {searchButtonPressed(author);},
-                  decoration: new InputDecoration(
-                      hintText: "Author name"
-                  ),
+                  onSubmitted: (author) {
+                    searchButtonPressed(author);
+                  },
+                  decoration: new InputDecoration(hintText: "Author name"),
                 ),
               ),
-              new Container(
-                margin: new EdgeInsets.symmetric(horizontal: 4.0),
-                child: new IconButton(
-                    icon: new Icon(Icons.search),
-                    onPressed: () {
-                      searchButtonPressed(_textController.text);
-                      FocusScope.of(context).requestFocus(new FocusNode());
-                    }
-                ),
-              )
+              new IconButton(
+
+                  icon: new Icon(Icons.search),
+                  tooltip: "Search quote from author",
+                  onPressed: () {
+                    searchButtonPressed(_textController.text);
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                  }),
+
             ],
           ),
-        )
-    );
+        ));
   }
 
   Widget _buildBottomBar() {
     return new Container(
-
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: new Column(
         children: <Widget>[
-          new RaisedButton(
-              onPressed: _presenter.makeQodCall,
-              child: const Text('Get quote of the day')
+          new Row(
+            children:
+            <Widget>[
+              new Expanded(
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new RaisedButton(
+                          onPressed: _presenter.makeQodCall,
+                          child: const Text('Get quote of the day')
+                      ),
+                    ],
+                  )
+
+              ),
+
+              new IconButton(
+                icon: new Icon(
+                  Icons.favorite_border, //alreadySaved ? Icons.favorite : Icons.favorite_border,
+                  color: null // alreadySaved ? Colors.red : null,
+                ),
+                onPressed: showFavorites
+              ),
+            ],
           ),
           _buildTextComposer()
         ],
@@ -84,36 +99,35 @@ class _HomePageState extends State<HomePage> implements View {
         new Flexible(
           child: new Container(
             padding: const EdgeInsets.all(32.0),
-            child:
-            new Column(
+            child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 new Text(quoteMessage),
-                new Text(
-                    "-" + author,
+                new Text("-" + author,
                     style: new TextStyle(
                       fontStyle: FontStyle.italic,
-                    )
-                )
+                    ))
               ],
             ),
           ),
         ),
-        new Divider(height: 1.0,),
+        new Divider(
+          height: 1.0,
+        ),
         new Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-            decoration: new BoxDecoration(
-                color:  Theme.of(context).cardColor
-            ),
-            child: _buildBottomBar()
-        ),
+            decoration: new BoxDecoration(color: Theme.of(context).cardColor),
+            child: _buildBottomBar()),
       ],
     );
 
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("InspiQuote"),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.list), onPressed: showFavorites),
+        ],
       ),
       body: new Builder(builder: (BuildContext context) {
         _scaffoldContext = context;
@@ -131,11 +145,16 @@ class _HomePageState extends State<HomePage> implements View {
   }
 
   @override
-  void handleError() {
+  void handleWrongAuthor() {
     Scaffold.of(_scaffoldContext).showSnackBar(new SnackBar(
-        backgroundColor: Colors.deepPurple,
-        content: new Text("Invalid author"),
-        duration: new Duration(seconds: 3),
-      ));
+          backgroundColor: Colors.deepPurple,
+          content: new Text("Invalid author"),
+          duration: new Duration(seconds: 3),
+        ));
+  }
+
+  @override
+  void showFavorites() {
+    // TODO: implement showFavorites
   }
 }
