@@ -4,6 +4,7 @@ import 'home_model.dart';
 
 class HomePageFavorites extends StatefulWidget {
   final HashMap<String, Quote> favoriteQuotes;
+
   HomePageFavorites({Key key, this.favoriteQuotes}) : super(key: key);
 
   @override
@@ -14,7 +15,6 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
   HashMap<String, Quote> favoriteQuotes;
   final _biggerFont = const TextStyle(fontSize: 16.0);
 
-
   _HomeFavoritesState(favoriteQuotes) {
     this.favoriteQuotes = favoriteQuotes;
   }
@@ -23,14 +23,23 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
     setState(() {
       favoriteQuotes.remove(hash);
     });
-
   }
 
   Widget _buildRow(String hash) {
     return new ListTile(
-        title: new Text(
-          hash,
-          style: _biggerFont,
+        title: new Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            new Text('-' + favoriteQuotes[hash].author,
+                style: new TextStyle(
+                  fontStyle: FontStyle.italic,
+                )),
+            new Text(
+              favoriteQuotes[hash].quoteMessage,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          ],
         ),
         trailing: new IconButton(
             icon: new Icon(
@@ -39,8 +48,7 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
             ),
             onPressed: () {
               removeQuoteFromFavorite(hash);
-            }
-        ),
+            }),
         onTap: () {
           null;
         });
@@ -56,8 +64,7 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
           if (i.isOdd) return new Divider();
           final index = i ~/ 2;
           return _buildRow(quotesList.elementAt(index));
-        }
-    );
+        });
   }
 
   @override
@@ -69,5 +76,4 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
       body: _buildSuggestions(),
     );
   }
-
 }
