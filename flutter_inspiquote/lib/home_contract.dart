@@ -8,6 +8,7 @@ abstract class View {
   void handleWrongAuthor();
 
   void showFavorites();
+  void toggleHeart(contained);
 }
 
 /// Retrieves the data from the Model, applies the UI logic and manages the state of the View, decides what to display and reacts to user input notifications from the View.
@@ -15,14 +16,18 @@ abstract class Presenter {
   void makeQodCall();
   void makeRandomQuoteCall(String author);
 
-  void saveQuote(Quote quote);
+  void saveQuote();  // cur quote is already in model
 }
 
 /// The data layer. Responsible for handling the business logic and communication with the network and database layers.
 abstract class Model {
+  void getCurrentQuote();
+  void setCurrentQuote(Quote quote);
+
   Future fetchQuoteOfDay();
   Future fetchRandomQuote(String author);
-  Future updateListOfFavorites(Quote quote);
 
+  bool isFavorite();
+  Future addQuoteToFavorites();
 }
 

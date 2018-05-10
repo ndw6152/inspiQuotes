@@ -17,6 +17,8 @@ class _HomePageState extends State<HomePage> implements View {
   String quoteMessage = "Hello World. Welcome to InspiQuote!";
   String author = "Neil";
 
+  bool contained = false;
+
   @override
   void initState() {
     super.initState();
@@ -43,14 +45,12 @@ class _HomePageState extends State<HomePage> implements View {
                 ),
               ),
               new IconButton(
-
                   icon: new Icon(Icons.search),
                   tooltip: "Search quote from author",
                   onPressed: () {
                     searchButtonPressed(_textController.text);
                     FocusScope.of(context).requestFocus(new FocusNode());
                   }),
-
             ],
           ),
         ));
@@ -62,28 +62,22 @@ class _HomePageState extends State<HomePage> implements View {
       child: new Column(
         children: <Widget>[
           new Row(
-            children:
-            <Widget>[
+            children: <Widget>[
               new Expanded(
                   child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new RaisedButton(
-                          onPressed: _presenter.makeQodCall,
-                          child: const Text('Get quote of the day')
-                      ),
-                    ],
-                  )
-
-              ),
-
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  new RaisedButton(
+                      onPressed: _presenter.makeQodCall,
+                      child: const Text('Get quote of the day')),
+                ],
+              )),
               new IconButton(
-                icon: new Icon(
-                  Icons.favorite_border, //alreadySaved ? Icons.favorite : Icons.favorite_border,
-                  color: null // alreadySaved ? Colors.red : null,
-                ),
-                onPressed: showFavorites
-              ),
+                  icon: new Icon(
+                    contained ? Icons.favorite : Icons.favorite_border,
+                    color: contained ? Colors.red : null,
+                  ),
+                  onPressed: _saveQuote),
             ],
           ),
           _buildTextComposer()
@@ -126,7 +120,10 @@ class _HomePageState extends State<HomePage> implements View {
       appBar: new AppBar(
         title: new Text("InspiQuote"),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: showFavorites),
+          new IconButton(
+              icon: new Icon(Icons.list),
+              onPressed: showFavorites,
+          ),
         ],
       ),
       body: new Builder(builder: (BuildContext context) {
@@ -153,8 +150,18 @@ class _HomePageState extends State<HomePage> implements View {
         ));
   }
 
+  void _saveQuote() {
+    _presenter.saveQuote();
+  }
+
   @override
   void showFavorites() {
     // TODO: implement showFavorites
+  }
+
+  void toggleHeart(contained) {
+    setState(() {
+      this.contained = contained;
+    });
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
+import 'package:flutter_inspiquote/utils.dart';
 import 'package:http/http.dart' as http;
 import 'home_contract.dart';
 
@@ -21,6 +23,19 @@ class Quote {
 }
 
 class HomeModel implements Model {
+
+  Quote currentQuote;
+  HashMap<String, Quote> favoriteQuotes = new HashMap<String, Quote>();
+  String hash;
+
+  void setCurrentQuote(Quote quote) {
+    this.currentQuote = quote;
+    this.hash = generateMd5(currentQuote.quoteMessage + currentQuote.author);
+  }
+  Quote getCurrentQuote() {
+    return this.currentQuote;
+  }
+
   @override
   Future<Quote> fetchQuoteOfDay() async {
     final response = await http.get(base_uri);
@@ -37,10 +52,21 @@ class HomeModel implements Model {
   }
 
   @override
-  Future updateListOfFavorites(Quote quote) {
-    // TODO: implement updateListOfFavorites
-    return null;
+  Future addQuoteToFavorites() async {
+    if(favoriteQuotes.containsKey(hash)) {
+      favoriteQuotes.remove(hash);
+    }
+    else {
+      favoriteQuotes[hash] = currentQuote;
+    }
+    print(hash);
+    return favoriteQuotes.containsKey(hash);
   }
+
+  bool isFavorite() {
+    return favoriteQuotes.containsKey(hash);
+  }
+
 }
 
 
