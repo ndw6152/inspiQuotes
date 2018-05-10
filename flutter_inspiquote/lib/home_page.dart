@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page_favorites.dart';
 import 'home_contract.dart';
 import 'home_model.dart';
 import 'home_presenter.dart';
@@ -121,8 +122,8 @@ class _HomePageState extends State<HomePage> implements View {
         title: new Text("InspiQuote"),
         actions: <Widget>[
           new IconButton(
-              icon: new Icon(Icons.list),
-              onPressed: showFavorites,
+            icon: new Icon(Icons.list),
+            onPressed: _getFavoriteQuotes,
           ),
         ],
       ),
@@ -154,14 +155,21 @@ class _HomePageState extends State<HomePage> implements View {
     _presenter.saveQuote();
   }
 
-  @override
-  void showFavorites() {
-    // TODO: implement showFavorites
-  }
-
   void toggleHeart(contained) {
     setState(() {
       this.contained = contained;
     });
+  }
+
+  void _getFavoriteQuotes() {
+    _presenter.getFavoriteQuotesCall();
+  }
+
+  void displayFavoriteQuotes(mapOfQuotes) {
+    Navigator.of(context).push(new MaterialPageRoute (
+      builder: (BuildContext context) {
+        return new HomePageFavorites(favoriteQuotes: mapOfQuotes);
+      },
+    ));
   }
 }

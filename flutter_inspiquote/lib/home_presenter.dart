@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:collection';
+
+import 'home_model.dart';
 
 import 'home_contract.dart';
 
@@ -38,4 +41,11 @@ class HomePresenter implements Presenter {
     _model.addQuoteToFavorites()
         .then((contain) => _view.toggleHeart(contain));
   }
+
+  @override
+  void getFavoriteQuotesCall() {
+    HashMap<String, Quote> favorites = _model.getFavoriteQuotes();
+    _view.displayFavoriteQuotes(favorites);
+  }
+
 }

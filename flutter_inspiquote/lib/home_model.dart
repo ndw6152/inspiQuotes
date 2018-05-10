@@ -24,16 +24,21 @@ class Quote {
 
 class HomeModel implements Model {
 
-  Quote currentQuote;
-  HashMap<String, Quote> favoriteQuotes = new HashMap<String, Quote>();
-  String hash;
+  Quote _currentQuote;
+  HashMap<String, Quote> _favoriteQuotes = new HashMap<String, Quote>();
+  String _hash;
 
   void setCurrentQuote(Quote quote) {
-    this.currentQuote = quote;
-    this.hash = generateMd5(currentQuote.quoteMessage + currentQuote.author);
+    this._currentQuote = quote;
+    this._hash = generateMd5(_currentQuote.quoteMessage + _currentQuote.author);
   }
+
   Quote getCurrentQuote() {
-    return this.currentQuote;
+    return this._currentQuote;
+  }
+
+  HashMap<String, Quote> getFavoriteQuotes() {
+    return _favoriteQuotes;
   }
 
   @override
@@ -53,18 +58,18 @@ class HomeModel implements Model {
 
   @override
   Future addQuoteToFavorites() async {
-    if(favoriteQuotes.containsKey(hash)) {
-      favoriteQuotes.remove(hash);
+    if(_favoriteQuotes.containsKey(_hash)) {
+      _favoriteQuotes.remove(_hash);
     }
     else {
-      favoriteQuotes[hash] = currentQuote;
+      _favoriteQuotes[_hash] = _currentQuote;
     }
-    print(hash);
-    return favoriteQuotes.containsKey(hash);
+    print(_hash);
+    return _favoriteQuotes.containsKey(_hash);
   }
 
   bool isFavorite() {
-    return favoriteQuotes.containsKey(hash);
+    return _favoriteQuotes.containsKey(_hash);
   }
 
 }
