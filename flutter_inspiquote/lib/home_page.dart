@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> implements View {
           height: 1.0,
         ),
         new Container(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 16.0),
             decoration: new BoxDecoration(color: Theme.of(context).cardColor),
             child: _buildBottomBar()),
       ],
