@@ -25,6 +25,27 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
     });
   }
 
+  void showAlertDialog(String hash) {
+    Quote quote = favoriteQuotes[hash];
+    AlertDialog dialog = new AlertDialog(
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          new Text('-' + favoriteQuotes[hash].author,
+              style: new TextStyle(
+                fontStyle: FontStyle.italic,
+              )),
+          new Text(
+            '"' + quote.quoteMessage + '"',
+            style: new TextStyle(fontSize: 16.0),
+          ),
+        ],
+      ),
+    );
+
+    showDialog(context: context, child: dialog);
+  }
+
   Widget _buildRow(String hash) {
     return new ListTile(
         title: new Column(
@@ -50,7 +71,7 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
               removeQuoteFromFavorite(hash);
             }),
         onTap: () {
-          null;
+          showAlertDialog(hash);
         });
   }
 
@@ -71,7 +92,7 @@ class _HomeFavoritesState extends State<HomePageFavorites> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Saved favorites"),
+        title: new Text("Favorite quotes"),
       ),
       body: _buildSuggestions(),
     );
